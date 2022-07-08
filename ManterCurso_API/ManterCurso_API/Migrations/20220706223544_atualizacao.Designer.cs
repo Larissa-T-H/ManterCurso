@@ -4,14 +4,16 @@ using ManterCurso_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ManterCurso_API.Migrations
 {
     [DbContext(typeof(ManterCurso_APIContext))]
-    partial class ManterCurso_APIContextModelSnapshot : ModelSnapshot
+    [Migration("20220706223544_atualizacao")]
+    partial class atualizacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +53,6 @@ namespace ManterCurso_API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantidade")
@@ -77,14 +78,11 @@ namespace ManterCurso_API.Migrations
                     b.Property<int>("CursoId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DataAtualizacao")
+                    b.Property<DateTime?>("DataAtualicacao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataInclusao")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Usuario")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LogId");
 

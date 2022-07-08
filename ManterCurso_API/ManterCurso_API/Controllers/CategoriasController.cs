@@ -81,7 +81,10 @@ namespace ManterCurso_API.Controllers
             _context.Categoria.Add(categoria);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategoria", new { id = categoria.CategoriaId }, categoria);
+
+             CreatedAtAction("GetCategoria", new { id = categoria.CategoriaId }, categoria);
+
+            return Ok(categoria);
         }
 
         // DELETE: api/Categorias/5

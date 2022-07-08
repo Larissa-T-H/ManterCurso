@@ -31,7 +31,7 @@ namespace ManterCurso_API.Migrations
                     DataTermino = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -44,34 +44,34 @@ namespace ManterCurso_API.Controllers
 
         // PUT: api/Logs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLog(int id, Log log)
-        {
-            if (id != log.LogId)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutLog(int id, Log log)
+        //{
+        //    if (id != log.LogId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(log).State = EntityState.Modified;
+        //    _context.Entry(log).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LogExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!LogExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/Logs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -84,25 +84,25 @@ namespace ManterCurso_API.Controllers
             return CreatedAtAction("GetLog", new { id = log.LogId }, log);
         }
 
-        // DELETE: api/Logs/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLog(int id)
-        {
-            var log = await _context.Log.FindAsync(id);
-            if (log == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Logs/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteLog(int id)
+        //{
+        //    var log = await _context.Log.FindAsync(id);
+        //    if (log == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Log.Remove(log);
-            await _context.SaveChangesAsync();
+        //    _context.Log.Remove(log);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        private bool LogExists(int id)
-        {
-            return _context.Log.Any(e => e.LogId == id);
-        }
+        //private bool LogExists(int id)
+        //{
+        //    return _context.Log.Any(e => e.LogId == id);
+        //}
     }
 }
