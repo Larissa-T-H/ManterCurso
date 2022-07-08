@@ -26,6 +26,8 @@ namespace ManterCurso_API.Models
         public int CategoriaId { get; set; }
 
         public bool? Status { get; set; } = true;
+
+        //[Required(ErrorMessage = "Categria inválida, inserir uma categoria válida!! Campo obrigatório!")]
         public Categoria Categoria { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace ManterCurso_API.Controllers
 
         // PUT: api/Logs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
+      //  [HttpPut("{id}")]
         //public async Task<IActionResult> PutLog(int id, Log log)
         //{
         //    if (id != log.LogId)
@@ -75,17 +75,17 @@ namespace ManterCurso_API.Controllers
 
         // POST: api/Logs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Log>> PostLog(Log log)
-        {
-            _context.Log.Add(log);
-            await _context.SaveChangesAsync();
+       // [HttpPost]
+        //public async Task<ActionResult<Log>> PostLog(Log log)
+        //{
+        //    _context.Log.Add(log);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLog", new { id = log.LogId }, log);
-        }
+        //    return CreatedAtAction("GetLog", new { id = log.LogId }, log);
+        //}
 
-        //// DELETE: api/Logs/5
-        //[HttpDelete("{id}")]
+        // DELETE: api/Logs/5
+       // [HttpDelete("{id}")]
         //public async Task<IActionResult> DeleteLog(int id)
         //{
         //    var log = await _context.Log.FindAsync(id);

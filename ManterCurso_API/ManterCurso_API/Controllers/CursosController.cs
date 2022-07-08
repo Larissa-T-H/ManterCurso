@@ -51,71 +51,71 @@ namespace ManterCurso_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCurso(int id, Curso curso)
         {
-            
-
-            if (curso.DataInicio.Date < DateTime.Now.Date)
+            try
             {
-                return BadRequest(new { mensagem = "Data de início menor que data atual" });
+                if (id != curso.CursoId)
+                {
+                    return BadRequest(new { mensagem = "Id diferente, inserir o Id correto!!" });
+
+                }
+
+                if (curso.DataInicio.Date < DateTime.Now.Date)
+                {
+                    return BadRequest(new { mensagem = "Data de início menor que a data atual" });
+                }
+                if (curso.DataTermino.Date < curso.DataInicio.Date)
+                {
+                    return BadRequest(new { mensagem = "Data do término menor que data de início" });
+                }
+
+                Boolean CompDesc = (_context.Curso.Any(c => c.Descricao == curso.Descricao && c.CursoId != curso.CursoId));
+
+                if (CompDesc)
+                {
+                    return BadRequest(new { mensagem = "Curso já cadastrado!" });
+                }
+
+                Boolean CompExiste = (_context.Curso.Any(e => e.DataInicio <= curso.DataTermino && e.DataTermino >= curso.DataInicio));
+
+                Boolean CompIgual = (_context.Curso.Any(i => i.DataTermino == curso.DataTermino && i.DataInicio == curso.DataInicio));
+
+                if (CompIgual)
+                {
+                    _context.Entry(curso).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+
+                    var log = await _context.Log.FirstOrDefaultAsync(l => l.CursoId == curso.CursoId);
+                    log.DataAtualizacao = DateTime.Now;
+                    _context.Log.Update(log);
+                    await _context.SaveChangesAsync();
+                    return Ok(new { mensagem = "Dados atualizado com sucesso!!" });
+                }
+
+                if (CompExiste)
+                {
+                    return BadRequest(new { mensagem = "Existe(m) curso(s) planejado(s) dentro de período informado!" });
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _context.Entry(curso).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+
+                    var log = await _context.Log.FirstOrDefaultAsync(l => l.CursoId == curso.CursoId);
+                    log.DataAtualizacao = DateTime.Now;
+                    _context.Log.Update(log);
+                    await _context.SaveChangesAsync();
+                    return Ok(new { mensagem = "Dados atualizado com sucesso!!" });
+                }
             }
-            if (curso.DataTermino.Date < curso.DataInicio.Date)
+            catch (Exception)
             {
-                return BadRequest(new { mensagem = "Data do término menor que data de inicio" });
+                return NotFound(new { mensagem = "Categoria inválida!!" });
             }
 
-            //Boolean Comparacao = (_context.Curso.Any(d => d.DataInicio <= curso.DataTermino || d.DataTermino >= curso.DataInicio
-            //|| d.DataTermino == curso.DataTermino || d.DataInicio == curso.DataInicio));
-
-            //if (Comparacao)
-            //{
-            //    return BadRequest(new { mensagem = "Existe curso planejado dentro de período informado!" });
-            //}
-
-            if (id != curso.CursoId)
-            {
-                return BadRequest(new { mensagem = "Erro Id diferente!!" });
-
-            }
-
-            //_context.Entry(curso).State = EntityState.Modified;
-            //await _context.SaveChangesAsync();
-
-            if (ModelState.IsValid)
-            {
-                _context.Entry(curso).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-
-                var log = await _context.Log.FindAsync(curso.CursoId);
-                log.DataAtualizacao = DateTime.Now.Date;
-                _context.Entry(log).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                return Ok(new { mensagem = "dados gravados com sucesso!!" });
-            }
-
-
-                //if (ModelState.IsValid)
-                //{
-                //    var log = new Log()
-                //{
-                //    CursoId = curso.CursoId,
-                //    DataAtualizacao = DateTime.Now,
-                //    Usuario = "Adm"
-                //};
-                //_context.Log.Update(log);
-                //await _context.SaveChangesAsync();
-                //return Ok(new { mensagem = "dados gravados com sucesso!!" });
-
-                //}
-
-                return BadRequest(new { mensagem = "erro!!" });
-
-
-
-            //var log = await _context.Log.FindAsync(curso.CursoId);
-            //log.DataAtualizacao = DateTime.Now;
-            //_context.Log.Update(log);
-            //await _context.SaveChangesAsync();
-
+            return BadRequest(new { mensagem = "erro!!" });
             
 
         }
@@ -125,84 +125,114 @@ namespace ManterCurso_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Curso>> PostCurso(Curso curso)
         {
-            if (curso.DataInicio.Date < DateTime.Now.Date)
+            try
             {
-                return BadRequest(new { mensagem = "Data de inicio menor que data atual" });
-            }
-            if (curso.DataTermino.Date < curso.DataInicio.Date)
-            {
-                return BadRequest(new { mensagem = "Data do termino menor que data de inicio" });
-            }
 
-            Boolean Comparacao = (_context.Curso.Any(d => d.DataInicio <= curso.DataTermino && d.DataTermino >= curso.DataInicio
-            || d.DataTermino == curso.DataTermino && d.DataInicio == curso.DataInicio));
-
-            if (Comparacao)
-            {
-                return BadRequest(new { mensagem = "Existe curso planejado dentro de período informado!" });
-            }
-            if (ModelState.IsValid)
-            {
-                _context.Curso.Add(curso);
-                await _context.SaveChangesAsync();
-                CreatedAtAction("GetCurso", new { id = curso.CursoId }, curso);
-
-                var log = new Log()
+                if (curso.DataInicio.Date < DateTime.Now.Date)
                 {
-                    CursoId = curso.CursoId,
-                    DataInclusao = DateTime.Now,
-                    DataAtualizacao = DateTime.Now,
-                    Usuario = "Adm"
-                };
-                _context.Log.Add(log);
-                await _context.SaveChangesAsync();
-                return Ok(new { mensagem = "dados gravados com sucesso!!" });
+                    return BadRequest(new { mensagem = "Data de início menor que data atual" });
+                }
+                if (curso.DataTermino.Date < curso.DataInicio.Date)
+                {
+                    return BadRequest(new { mensagem = "Data do término menor que data de início" });
+                }
+
+                Boolean CompDesc = (_context.Curso.Any(c => c.Descricao == curso.Descricao));
+
+                if (CompDesc)
+                {
+                    return BadRequest(new { mensagem = "Curso já cadastrado!" });
+                }
+
+
+                Boolean Comparacao = (_context.Curso.Any(d => d.DataInicio <= curso.DataTermino && d.DataTermino >= curso.DataInicio
+                || d.DataTermino == curso.DataTermino && d.DataInicio == curso.DataInicio));
+
+                if (Comparacao)
+                {
+                    return BadRequest(new { mensagem = "Existe(m) curso(s) planejado(s) dentro de período informado!" });
+                }
+                if (ModelState.IsValid)
+                {
+                    _context.Curso.Add(curso);
+                    await _context.SaveChangesAsync();
+                    CreatedAtAction("GetCurso", new { id = curso.CursoId }, curso);
+
+                    var log = new Log()
+                    {
+                        CursoId = curso.CursoId,
+                        DataInclusao = DateTime.Now,
+                        // DataAtualizacao = DateTime.Now,
+                        Usuario = "Adm"
+                    };
+                    _context.Log.Add(log);
+                    await _context.SaveChangesAsync();
+                    return Ok(new { mensagem = "Dados gravados com sucesso!!" });
+                }
             }
-
-            return BadRequest(new { mensagem = "erro!!" });        
-
-        }
-
-
-        // DELETE: api/Cursos/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCurso(int id)
-        {
-            var curso = await _context.Curso.FindAsync(id);
-            if (curso == null)
+            catch (Exception )
             {
-                return NotFound();
+                return NotFound(new { mensagem = "Categoria inválida!!" });
             }
 
-            _context.Curso.Remove(curso);
-            await _context.SaveChangesAsync();
+            return BadRequest(new { mensagem = "erro!!" });
 
-            return NoContent();
         }
-
-        private bool CursoExists(int id)
-        {
-            return _context.Curso.Any(e => e.CursoId == id);
-        }
-
-
-
-
-
-
-        //private async Task<ActionResult> AtualizacaoLog(Curso curso)
+        // DELETE: api/Cursos/5
+        //    [HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteCurso(int id)
         //{
-        //    var log = await _context.Log.FindAsync(curso.CursoId);
-        //    log.DataAtualizacao = DateTime.Now;
-        //    try
+        //    var curso = await _context.Curso.FindAsync(id);
+        //    if (curso == null)
         //    {
-        //        await _context.Log.Update();
+        //        return NotFound();
         //    }
-        //    catch (Exception)
-        //    {
-        //        return BadRequest();
-        //    }
+
+        //    _context.Curso.Remove(curso);
+        //    await _context.SaveChangesAsync();
+
         //    return NoContent();
         //}
+
+        //DELETE: api/Cursos/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DesativarCurso(int id)
+        {
+            var curso = await _context.Curso.FindAsync(id);
+            if (curso == null || curso.Status == false)
+            {
+                return NotFound(new { mensagem = "Id informado não existe, inserir um Id válido!!" });
+            } 
+
+            if (curso.DataTermino <= DateTime.Now.Date)
+            {
+                return BadRequest(new { mensagem = "Curso já realizado. Não pode deletar!!" });
+            }
+            else
+            {
+                curso.Status = false;
+                _context.Entry(curso).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+
+                var log = await _context.Log.FirstOrDefaultAsync(l => l.CursoId == curso.CursoId);
+                log.DataAtualizacao = DateTime.Now;
+                _context.Log.Update(log);
+                await _context.SaveChangesAsync();          
+
+                return Ok(new { mensagem = "Curso deletado com sucesso!!" });
+            }
+
+
+        }
+
+
+
+        //private bool CursoExists(int id)
+        //{
+        //    return _context.Curso.Any(e => e.CursoId == id);
+        //}
+
+
     }
 }
