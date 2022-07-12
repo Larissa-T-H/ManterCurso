@@ -22,12 +22,12 @@ namespace ManterCurso_API.Models
 
         public int Quantidade { get; set; }
 
+        [Display(Name = "Categoria")]
         [Required (ErrorMessage = "Categria obrigatório")]
         public int CategoriaId { get; set; }
 
-        public bool? Status { get; set; } = true;
+        public bool? IsStatus { get; set; } = true;
 
-        //[Required(ErrorMessage = "Categria inválida, inserir uma categoria válida!! Campo obrigatório!")]
         public Categoria Categoria { get; set; }
     }
 }

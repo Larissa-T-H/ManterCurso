@@ -32,6 +32,7 @@ namespace ManterCurso_API.Controllers
 
         
 
+
         // GET: api/Cursos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Curso>> GetCurso(int id)
@@ -178,28 +179,13 @@ namespace ManterCurso_API.Controllers
             return BadRequest(new { mensagem = "erro!!" });
 
         }
-        // DELETE: api/Cursos/5
-        //    [HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteCurso(int id)
-        //{
-        //    var curso = await _context.Curso.FindAsync(id);
-        //    if (curso == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Curso.Remove(curso);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
 
         //DELETE: api/Cursos/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DesativarCurso(int id)
         {
             var curso = await _context.Curso.FindAsync(id);
-            if (curso == null || curso.Status == false)
+            if (curso == null || curso.IsStatus == false)
             {
                 return NotFound(new { mensagem = "Id informado não existe, inserir um Id válido!!" });
             } 
@@ -210,7 +196,7 @@ namespace ManterCurso_API.Controllers
             }
             else
             {
-                curso.Status = false;
+                curso.IsStatus = false;
                 _context.Entry(curso).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
@@ -222,17 +208,7 @@ namespace ManterCurso_API.Controllers
 
                 return Ok(new { mensagem = "Curso deletado com sucesso!!" });
             }
-
-
         }
-
-
-
-        //private bool CursoExists(int id)
-        //{
-        //    return _context.Curso.Any(e => e.CursoId == id);
-        //}
-
 
     }
 }
