@@ -8,14 +8,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CursoComponent } from './componentes/curso/curso.component';
 import { NavbarComponent } from './componentes/navbar/navbar.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    CursoComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
