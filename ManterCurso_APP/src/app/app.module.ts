@@ -13,6 +13,7 @@ import { CursoModule } from './componentes/curso/curso.module';
 import { ModalModule } from './componentes/modal/modal.module';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
