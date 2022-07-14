@@ -8,7 +8,6 @@ export class Curso{
     dataTermino!: Date;
     quantidade: number = 0;
     isStatus: boolean = true;
-    categoriaId!: number;
+    categoriaId!: string;
     categoria!: Categoria;
-
 }

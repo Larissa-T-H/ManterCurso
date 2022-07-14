@@ -26,8 +26,9 @@ namespace ManterCurso_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Curso>>> GetCurso()
         {
-            var curso = await _context.Curso.ToListAsync();
-            return Ok(curso);
+            return await _context.Curso.Include(c => c.Categoria).ToListAsync();
+            //var curso = await _context.Curso.ToListAsync();
+            //return Ok(curso);
         }
 
         

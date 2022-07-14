@@ -1,0 +1,45 @@
+
+    <!--Modal cadastro e atualizar-->
+<section class="corpo">   
+    <form [formGroup]="cursoFormulario" (ngSubmit)="EnviarForm()">
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição</label>
+            <input type="text" class="form-control" id="descricao" formControlName="descricao" placeholder="Descrição" required />
+            <div *ngIf=" cursoFormulario.controls['descricao'].invalid && cursoFormulario.controls['descricao'].touched">
+                <span style="color:red">Campo Obrigatório</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="dataInicio" class="form-label">Data de Início</label>
+            <input type="date" class="form-control" id="dataInicio" formControlName="dataInicio" placeholder="Data de Início" required/>
+            <div *ngIf="cursoFormulario.controls['dataInicio'].invalid && cursoFormulario.controls['dataInicio'].touched">
+                <span style="color:red">Campo Obrigatório</span>
+            </div>
+        </div> 
+        <div class="mb-3">
+            <label for="dataTermino" class="form-label">Data do Término</label>
+            <input type="date" class="form-control" id="dataTermino" formControlName="dataTermino" placeholder="Data do Término" required/>
+            <div *ngIf=" cursoFormulario.controls['dataTermino'].invalid && cursoFormulario.controls['dataTermino'].touched" >
+                <span style="color:red">Campo Obrigatório</span>
+            </div>
+        </div> 
+        <div class="mb-3">
+            <label for="quantidade" lass="form-label">Quantidade</label>
+            <input type="number" class="form-control" id="quantidade" formControlName="quantidade" placeholder="Opcional" />
+        </div>
+        <div class="mb-3">
+            <label  class="form-label">Categoria</label>
+            <select class="form-select"  formControlName="categoriaId" required>
+                <option *ngFor="let curso of categorias" [value]="curso.categoriaId"> {{ curso.categoriaNome }}</option>
+            </select>
+            <div *ngIf="cursoFormulario.controls['categoriaId'].invalid && cursoFormulario.controls['categoriaId'].touched">
+                <span  style="color:red">Campo Obrigatório</span>
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-outline-warning ms-3" data-bs-dismiss="modal" (click)="LimparFormulario()"> Voltar</button>
+            <button type="submit"class="btn btn-primary ms-3" data-bs-dismiss="modal" [disabled]="cursoFormulario.invalid"> Salvar </button>
+        </div>
+    </form>
+</section>

@@ -1,1 +1,83 @@
-<p>curso works!</p>
+<div class=" container">
+    <div>
+        <button id="botao" type="button"  class="btn btn-outline-primary " data-bs-toggle="modal"
+        data-bs-target="#exampleModal" (click)="ModalCadastro()">Adicionar Curso </button>
+    </div>
+    <div class="col-md-6 mt-3 mb-3" >
+        <input class="form-control" type="search" placeholder="Buscar" aria-label="Search" [(ngModel)] = "filtoCursos">
+    </div>
+
+    <div class="col-md-7 mt-3 mb-3" >
+        <form [formGroup]="buscaFormulario">
+         
+          <div class="input-group input-daterange col-md-6"> 
+                <input formControlName="dataInicio" type="date" class="form-control" [(ngModel)]="dataInicio">
+                <p class="m-2"> à </p>
+                <div class="input-group-addon"></div>
+                <input type="date" class="form-control" [(ngModel)]="dataTermino" formControlName="dataTermino">
+                <button type="button" class="btn btn-outline-warning ms-2 " (click)="LimparFiltro()">Limpar</button>
+                <button id="botDel" type="button" class="btn btn-outline-primary ms-2" (click)="filtroData()">Buscar</button>
+          </div>
+        </form>
+    </div>
+ 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Descrição</th>
+                <th scope="col">Data Início</th>
+                <th scope="col">Data Término</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let curso of cursosFiltrado">
+            <tr *ngIf="curso.isStatus == true">
+                <td>{{ curso.descricao }}</td>
+                <td>{{ curso.dataInicio | date: "dd/MM/yyyy" }}</td>
+                <td>{{ curso.dataTermino | date: "dd/MM/yyyy" }}</td>
+                <td>{{ curso.quantidade }}</td>
+                <td>{{ curso.categoria.categoriaNome }}</td>
+                <td>
+                    <button  class="btn btn-outline-warning ms-3" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)=" ModalAtualizar(curso.cursoId)">Editar</button>
+                    <button class="btn btn-outline-danger ms-3" data-bs-toggle="modal" data-bs-target="#modalDelete" (click)="AlterarIdDeletar(curso.cursoId)">Deletar</button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot *ngIf="cursosFiltrado.length == 0">
+            <tr>
+              <td colspan="8">
+                  <h4>Sem Registros</h4>
+              </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<!--modal chamar cadastro e editar-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">{{ tituloForm }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-modal [cursoFormulario]='cursoFormulario'></app-modal>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal delete-->
+<div class="modal fade"  id="modalDelete">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <h4 class="modal-title" style="color:red">Deletar</h4>
+        <div class="modal-body"> <p>Deseja excluir?</p></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="LimparFormulario()"> Não Deletar</button>
+          <button type="button" class="btn btn-danger"(click)="DeletarCruso(idDelet)" data-bs-dismiss="modal">Deletar</button>
+        </div>
+    </div>
+</div>
