@@ -67,8 +67,6 @@ export class CursoComponent implements OnInit {
     return this.cursos.filter((Curso: {descricao: string}) => Curso.descricao.toLocaleLowerCase().indexOf(filtrar) !== -1);
   }
 
-  
-
   ListarCursos(): void{
     this.cursoService.ListarCursos().subscribe((resul) => {
       this.cursos = resul;
@@ -152,7 +150,6 @@ export class CursoComponent implements OnInit {
       this. filtrarDataInicioTermino(this.dataInicio, this.dataTermino)
     }
   }
-
   filtrarDataInicioTermino(dataInicio:any, dataTermino: any) : any
   {
     this.cursosFiltrado = this.cursos.filter(result =>{
