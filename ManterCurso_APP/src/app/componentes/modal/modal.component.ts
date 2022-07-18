@@ -35,7 +35,6 @@ export class ModalComponent implements OnInit {
   ListarCursos(): void{
     this.cursoService.ListarCursos().subscribe((resul) => {
       this.cursos = resul;
-      console.log(resul);
     this.cursosFiltrado = resul;});
   }
 
@@ -47,28 +46,10 @@ export class ModalComponent implements OnInit {
   LimparFormulario(): void {
     this.cursoFormulario.reset();
   }
-
+  
   EnviarForm(): void{
-    const curso: Curso = this.cursoFormulario.value;
-    console.log(curso)  
-      if(curso.cursoId < 0){
-        this.cursoService.AdicionarCurso(curso).subscribe({
-          next:(resp)=>{
-            this.toastr.success('Curso gravado com sucesso!!', 'Gravando');
-        
-            this.LimparFormulario();
-            this.ListarCursos();
-        },
-          error: (resp) =>{console.log(resp);
-           if(resp.error){
-            this.toastr.error('Curso e/ou Data já cadastrado', 'Erro ao cadastrar')
-           } else {
-              this.toastr.error(resp.error, 'Erro cas');
-           }
-           this.LimparFormulario();
-          }, 
-        });
-      } else{
+    const curso: Curso = this.cursoFormulario.value; 
+      if(curso.cursoId > 1 ){
         this.cursoService.AtualizarCurso(curso).subscribe({
           next: (resp) =>{
             this.toastr.success('Curso atualizado com sucesso!!', 'Atualizando');
@@ -76,13 +57,23 @@ export class ModalComponent implements OnInit {
             this.ListarCursos(); 
           },
           error: (resp) =>{
-            if(resp.error){
-              this.toastr.error('Curso e/ou Data já cadastrado', 'Erro ao atualizar')
-              } else {
-                  this.toastr.error(resp.error, 'Erro at');
-              }
-              this.LimparFormulario();
-            },
+            this.toastr.error(resp.error.mensagem, 'Erro ao Atualizar');
+            console.log(resp);
+           this.LimparFormulario();
+          }, 
+        });
+      } else{
+        this.cursoService.AdicionarCurso(curso).subscribe({
+          next:(resp)=>{
+            this.toastr.success('Curso gravado com sucesso!!', 'Gravando');
+        
+            this.LimparFormulario();
+            this.ListarCursos();
+        },
+          error: (resp) =>{
+            this.toastr.error(resp.error.mensagem, 'Erro ao cadastrar');
+           this.LimparFormulario();
+          }, 
         });
       }
   }

@@ -91,13 +91,12 @@ export class CursoComponent implements OnInit {
   ModalCadastro(): void {
     this.tituloForm = 'Curso Novo';
     this.cursoFormulario = new FormGroup({
-        cursoId: new FormControl(null),
-        descricao: new FormControl(null),
-        dataInicio: new FormControl(null),
-        dataTermino: new FormControl(null),
+        descricao: new FormControl(null, [Validators.required]),
+        dataInicio: new FormControl(null, [Validators.required]),
+        dataTermino: new FormControl(null, [Validators.required]),
         quantidade: new FormControl(null),
         isStatus: new FormControl(true),
-        categoriaId: new FormControl(null)
+        categoriaId: new FormControl(null, [Validators.required])
     });
   }
   Dataformatada(dt: any): Date{
@@ -128,12 +127,8 @@ export class CursoComponent implements OnInit {
         this.ListarCursos();
       },
       error: (resp) =>{
-        if(resp.error ){
-          console.log(resp);
-          this.toastr.error('Curso não pode ser deletado!!', 'Erro')
-          } else {
-              this.toastr.error(resp.error, 'Erro');
-          }
+        this.toastr.error(resp.error.mensagem, 'Erro');
+        this.LimparFormulario();
         },
     });
   }
